@@ -58,7 +58,17 @@ const updateProductById = async (req, res) => {
 }
 
 const deleteProductById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Delete product by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { productId } = req.params
+    const product = await db.collection("products").deleteOne({ _id: new ObjectId(productId) })
+    res.status(200).json({ success: true, data: product })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 router.get("/products", getAllProducts)
