@@ -3,7 +3,16 @@ const router = require("express").Router();
 const getMongoConnection = require("../../../config/mongo-connect")
 
 const getAllUsers = async (req, res) => {
-  res.status(200).json({ success: true, message: "Get all users" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const users = await db.collection("users").find({}).toArray()    
+    res.status(200).json({ success: true, data: users })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const createNewUser = async (req, res) => {
