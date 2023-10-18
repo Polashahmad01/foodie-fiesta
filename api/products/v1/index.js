@@ -12,7 +12,16 @@ const getProductById = async (req, res) => {
 }
 
 const createNewProduct = async (req, res) => {
-  res.status(201).json({ success: true, message: "Create new product" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const product = await db.collection("users").insertOne({ ...req.body })
+    res.status(201).json({ success: true, data: product })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const updateProductById = async (req, res) => {
