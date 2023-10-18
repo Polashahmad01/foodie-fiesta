@@ -4,6 +4,8 @@ const morgan = require("morgan")
 const colors = require("colors")
 const cors = require("cors")
 
+const userRoutes = require("./api/user")
+
 dotenv.config()
 
 const app = express()
@@ -21,6 +23,8 @@ app.use(cors())
 app.get("/", (req, res) => {
   res.status(200).json({ success: true, message: "Welcome to Foodie Fiesta API" })
 })
+
+app.use("/api", userRoutes)
 
 const PORT = process.env.PORT || 3000
 
