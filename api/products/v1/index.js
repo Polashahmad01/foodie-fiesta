@@ -17,7 +17,17 @@ const getAllProducts = async (req, res) => {
 }
 
 const getProductById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Get product by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { productId } = req.params
+    const product = await db.collection("products").findOne({ _id: new ObjectId(productId) }, { sort: { "products.title": -1 } })
+    res.status(200).json({ success: true, data: product })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const createNewProduct = async (req, res) => {
@@ -42,7 +52,7 @@ const deleteProductById = async (req, res) => {
 }
 
 router.get("/products", getAllProducts)
-router.get("products/:productId", getProductById)
+router.get("/products/:productId", getProductById)
 router.post("/products", createNewProduct)
 router.put("/products/:productId", updateProductById)
 router.delete("/products/:productId", deleteProductById)
