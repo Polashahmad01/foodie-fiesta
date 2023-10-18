@@ -4,6 +4,8 @@ const morgan = require("morgan")
 const colors = require("colors")
 const cors = require("cors")
 
+const userRoutes = require("./api/user")
+
 dotenv.config()
 
 const app = express()
@@ -22,6 +24,8 @@ app.get("/", (req, res) => {
   res.status(200).json({ success: true, message: "Welcome to Foodie Fiesta API" })
 })
 
+app.use("/api", userRoutes)
+
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
@@ -32,6 +36,6 @@ app.listen(PORT, () => {
 
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Error: ${err.message}`.red)
-  // Close server & exit process
-  server.close(() => process.exit(1))
+  // Close app & exit process
+  app.close(() => process.exit(1))
 })
