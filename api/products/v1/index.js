@@ -44,7 +44,17 @@ const createNewProduct = async (req, res) => {
 }
 
 const updateProductById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Update product by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { productId } = req.params
+    const product = await db.collection("products").updateOne({ _id: new ObjectId(productId) }, { $set: { ...req.body } })
+    res.status(200).json({ success: true, data: product })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const deleteProductById = async (req, res) => {
