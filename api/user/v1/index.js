@@ -64,7 +64,17 @@ const updateUserById = async (req, res) => {
 }
 
 const deleteUserById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Delete user by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { userId } = req.params
+    const user = await db.collection("users").deleteOne({ _id: new ObjectId(userId)})
+    res.status(200).json({ success: true, data: user })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 router.get("/user", getAllUsers)
