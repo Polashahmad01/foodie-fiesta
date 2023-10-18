@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { ObjectId } = require("mongodb")
 
 const getMongoConnection = require("../../../config/mongo-connect")
 
@@ -33,7 +34,18 @@ const createNewUser = async (req, res) => {
 }
 
 const getUserById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Get user by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { userId } = req.params
+    const user = await db.collection("users").findOne({ _id: new ObjectId(userId)}, { sort: { "users.name": -1 }})
+    console.log("user", user)
+    res.status(200).json({ success: true, data: user })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const updateUserById = async (req, res) => {
