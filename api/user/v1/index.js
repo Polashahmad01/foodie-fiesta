@@ -49,7 +49,18 @@ const getUserById = async (req, res) => {
 }
 
 const updateUserById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Update user by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { userId } = req.params
+    const { name, email } = req.body
+    const user = await db.collection("users").updateOne({ _id: new ObjectId(userId)}, { $set: { name, email }})
+    res.status(200).json({ success: true, data: user })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const deleteUserById = async (req, res) => {
