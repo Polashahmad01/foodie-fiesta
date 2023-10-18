@@ -77,10 +77,10 @@ const deleteUserById = async (req, res) => {
   }
 }
 
-router.get("/user", getAllUsers)
-router.post("/user", createNewUser)
-router.get("/user/:userId", getUserById)
-router.put("/user/:userId", updateUserById)
-router.delete("/user/:userId", deleteUserById)
+router.get("/users", getAllUsers)
+router.post("/users", createNewUser)
+router.get("/users/:userId", getUserById)
+router.put("/users/:userId", updateUserById)
+router.delete("/users/:userId", deleteUserById)
 
 module.exports = router;
