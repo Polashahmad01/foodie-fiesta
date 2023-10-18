@@ -52,8 +52,7 @@ const updateUserById = async (req, res) => {
   const { client, db } = await getMongoConnection()
   try {
     const { userId } = req.params
-    const { name, email } = req.body
-    const user = await db.collection("users").updateOne({ _id: new ObjectId(userId)}, { $set: { name, email }})
+    const user = await db.collection("users").updateOne({ _id: new ObjectId(userId)}, { $set: { ...req.body }})
     res.status(200).json({ success: true, data: user })
   } catch (error) {
     console.error(error)
@@ -77,10 +76,10 @@ const deleteUserById = async (req, res) => {
   }
 }
 
-router.get("/user", getAllUsers)
-router.post("/user", createNewUser)
-router.get("/user/:userId", getUserById)
-router.put("/user/:userId", updateUserById)
-router.delete("/user/:userId", deleteUserById)
+router.get("/users", getAllUsers)
+router.post("/users", createNewUser)
+router.get("/users/:userId", getUserById)
+router.put("/users/:userId", updateUserById)
+router.delete("/users/:userId", deleteUserById)
 
 module.exports = router;

@@ -4,7 +4,8 @@ const morgan = require("morgan")
 const colors = require("colors")
 const cors = require("cors")
 
-const userRoutes = require("./api/user")
+const userRoutes = require("./api/users")
+const productRoutes = require("./api/products")
 
 dotenv.config()
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api", userRoutes)
+app.use("/api", productRoutes)
 
 const PORT = process.env.PORT || 3000
 
