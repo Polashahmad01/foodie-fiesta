@@ -4,7 +4,16 @@ const { ObjectId } = require("mongodb")
 const getMongoConnection = require("../../../config/mongo-connect")
 
 const getAllOrders = async (req, res) => {
-  res.status(200).json({ success: true, message: "Get all orders" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const result = await db.collection("orders").find({}).toArray()
+    res.status(200).json({ success: true, data: result })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const createNewOrder = async (req, res) => {
@@ -24,7 +33,7 @@ const createNewOrder = async (req, res) => {
     const result = await db.collection("orders").insertOne(order)
     res.status(201).json({ success: true, message: "Order created", data: result })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(500).json({ success: false, message: error.message })
   } finally {
     await client.close()
