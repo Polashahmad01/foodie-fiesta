@@ -80,7 +80,17 @@ const updateOrderById = async (req, res) => {
 }
 
 const deleteOrderById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Delete order by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { orderId } = req.params
+    const result = await db.collection("orders").deleteOne({ _id: new ObjectId(orderId) })
+    res.status(200).json({ success: true, data: result })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 router.get("/orders", getAllOrders)
