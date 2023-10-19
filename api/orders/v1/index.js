@@ -41,7 +41,17 @@ const createNewOrder = async (req, res) => {
 }
 
 const getOrderById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Get order by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { orderId } = req.params
+    const result = await db.collection("orders").findOne({ _id: new ObjectId(orderId) })
+    res.status(200).json({ success: true, data: result })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const updateOrderById = async (req, res) => {
