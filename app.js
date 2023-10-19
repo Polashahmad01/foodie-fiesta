@@ -7,6 +7,7 @@ const cors = require("cors")
 const userRoutes = require("./api/users")
 const productRoutes = require("./api/products")
 const orderRoutes = require("./api/orders")
+const ratingRoutes = require("./api/reviews-ratings")
 
 dotenv.config()
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 app.use("/api", userRoutes)
 app.use("/api", productRoutes)
 app.use("/api", orderRoutes)
+app.use("/api", ratingRoutes)
 
 const PORT = process.env.PORT || 3000
 
