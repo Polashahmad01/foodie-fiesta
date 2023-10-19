@@ -55,7 +55,28 @@ const getOrderById = async (req, res) => {
 }
 
 const updateOrderById = async (req, res) => {
-  res.status(200).json({ success: true, message: "Update order by id" })
+  const { client, db } = await getMongoConnection()
+  try {
+    const { orderId } = req.params
+    const { orderItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice, userId } = req.body
+    const order = {
+      orderItems,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+      user: new ObjectId(userId)
+    }
+    const result = await db.collection("orders").updateOne({ _id: new ObjectId(orderId) }, { $set: order })
+    res.status(200).json({ success: true, message: "Order updated", data: result })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: error.message })
+  } finally {
+    await client.close()
+  }
 }
 
 const deleteOrderById = async (req, res) => {
