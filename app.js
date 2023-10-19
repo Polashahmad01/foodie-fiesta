@@ -8,6 +8,7 @@ const userRoutes = require("./api/users")
 const productRoutes = require("./api/products")
 const orderRoutes = require("./api/orders")
 const ratingRoutes = require("./api/reviews-ratings")
+const settingRoutes = require("./api/settings-perferences")
 
 dotenv.config()
 
@@ -31,6 +32,7 @@ app.use("/api", userRoutes)
 app.use("/api", productRoutes)
 app.use("/api", orderRoutes)
 app.use("/api", ratingRoutes)
+app.use("/api", settingRoutes)
 
 const PORT = process.env.PORT || 3000
 
