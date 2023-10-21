@@ -22,7 +22,7 @@ steps:
         "--region=us-central1",
         "--allow-unauthenticated",
         "--set-secrets",
-        "MONGO_DB_URI=talk-to-celebrity-mongodb-uri:latest",
+        "MONGO_DB_URI=foodie-fiesta-mongo-uri:latest",
       ]
 options:
   logging: CLOUD_LOGGING_ONLY
