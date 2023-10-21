@@ -10,6 +10,7 @@ const orderRoutes = require("./api/orders")
 const ratingRoutes = require("./api/reviews-ratings")
 const settingRoutes = require("./api/settings-perferences")
 const searchFilteringRoutes = require("./api/search-filtering")
+const shippingRoutes = require("./api/shipping-cart")
 
 dotenv.config()
 
@@ -35,6 +36,7 @@ app.use("/api", orderRoutes)
 app.use("/api", ratingRoutes)
 app.use("/api", settingRoutes)
 app.use("/api", searchFilteringRoutes)
+app.use("/api", shippingRoutes)
 
 const PORT = process.env.PORT || 3000
 
