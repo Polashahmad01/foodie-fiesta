@@ -11,8 +11,19 @@ const authenticate = async (req, res, next) => {
   if(req.headers?.authorization) {
     try {
       const token = req.headers.authorization.split(" ")[1]
-      const decodedToken = await admin.auth().verifyIdToken(token)
-      req.userData = decodedToken
+      const decodedUser = await admin.auth().verifyIdToken(token)
+      const email = decodedUser.email
+      const userId = decodedUser.uid
+      if(!email) {
+        throw new Error("Email not found in decoded token")
+      }
+      if(!userId) {
+        throw new Error("User ID not found in decoded token")
+      }
+      req.headers.user = {
+        email,
+        userId
+      }
       next()
     } catch (error) {
       res.status(401).json({ success: false, message: "Not Authorized", error: error.message })
