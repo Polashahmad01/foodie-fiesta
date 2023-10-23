@@ -1,15 +1,10 @@
 steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
-      [
-        "build",
-        "-t",
-        "gcr.io/$PROJECT_ID/foodie-fiesta-backend:$SHORT_SHA",
-        ".",
-      ]
+      ["build", "-t", "gcr.io/$PROJECT_ID/foodie-festa-backend:$SHORT_SHA", "."]
 
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/$PROJECT_ID/foodie-fiesta--backend:$SHORT_SHA"]
+    args: ["push", "gcr.io/$PROJECT_ID/foodie-festa-backend:$SHORT_SHA"]
 
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -17,12 +12,12 @@ steps:
         "beta",
         "run",
         "deploy",
-        "foodie-fiesta-backend",
-        "--image=gcr.io/$PROJECT_ID/foodie-fiesta-backend:$SHORT_SHA",
+        "foodie-festa-backend",
+        "--image=gcr.io/$PROJECT_ID/foodie-festa-backend:$SHORT_SHA",
         "--region=us-central1",
         "--allow-unauthenticated",
         "--set-secrets",
-        "MONGO_DB_URI=foodie-fiesta-mongo-uri:latest",
+        "FIREBASE_SERVICE_ACCOUNT=foodie-festa-service-account:latest,MONGO_DB_URI=foodie-festa-mongo-uri:latest",
       ]
 options:
   logging: CLOUD_LOGGING_ONLY

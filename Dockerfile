@@ -2,14 +2,12 @@ FROM node:18
 
 WORKDIR /app
 
-COPY package.json /app
+COPY packge*.json /app
 
-RUN npm install
+RUN npm install --production
 
 COPY . /app
 
-ENV CLOUD_ENV=production \
-  NODE_ENV=production \
-  PORT=3000
+ENV NODE_ENV=production
 
 CMD [ "node", "app.js" ]
