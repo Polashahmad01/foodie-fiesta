@@ -16,7 +16,7 @@ steps:
         "--region=us-central1",
         "--allow-unauthenticated",
         "--set-secrets",
-        "FIREBASE_SERVICE_ACCOUNT=foodie-festa-service-account:latest,MONGO_DB_URI=foodie-festa-mongo-uri:latest",
+        "FIREBASE_SERVICE_ACCOUNT=foodie-festa-service-account:latest,MONGO_USERNAME=foodie-festa-mongo-username:latest,MONGO_PASSWORD=foodie-festa-mongo-password:latest,MONGO_DATABASE_NAME=foodie-festa-mongo-database-name:latest",
       ]
 options:
   logging: CLOUD_LOGGING_ONLY
