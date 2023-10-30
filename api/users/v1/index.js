@@ -19,10 +19,12 @@ const getAllUsers = async (req, res) => {
 const createNewUser = async (req, res) => {
   const { client, db } = await  getMongoConnection()
   try {
-    const { name, email, password } = req.body
+    const { userId, name, email, role } = req.body
     const user = await db.collection("users").insertOne({
+      userId,
       name,
-      email
+      email,
+      role
     })
     res.status(201).json({ success: true, data: user })
   } catch (error) {
